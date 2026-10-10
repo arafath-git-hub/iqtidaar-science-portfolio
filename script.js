@@ -1,393 +1,500 @@
-const bootSequenceEl = document.getElementById("bootSequence");
-const mainContent = document.getElementById("mainContent");
-const bootBar = document.getElementById("bootBar");
-const bootStatus = document.getElementById("bootStatus");
-const skipBootBtn = document.getElementById("skipBootBtn");
-const navLinks = document.querySelectorAll(".nav-link");
-const panels = document.querySelectorAll(".panel");
-const tabBtns = document.querySelectorAll(".tab-btn");
-const menuToggle = document.getElementById("menuToggle");
-const mainNav = document.getElementById("mainNav");
-const deepSpaceToggle = document.getElementById("deepSpaceToggle");
-const contactForm = document.getElementById("contactForm");
 
-const bootMessages = [
-  "INITIALIZING SYSTEMS...",
-  "LOADING SCIENCE DATABASE...",
-  "SYNCING ASTRO MODULES...",
-  "CALIBRATING CREATIVITY ENGINE...",
-  "READY FOR DEPLOYMENT..."
-];
+/* ==========================================
+   IQTIDAAR ARAFATH — SCIENCE OS 3000
+   Main JavaScript
+========================================== */
 
-function runBootSequence() {
-  let step = 0;
-  let progress = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
 
-  const interval = setInterval(() => {
-    progress += 20;
-    bootBar.style.width = progress + "%";
+  // ------------------------------------------
+  // 1. ELEMENTS
+  // ------------------------------------------
 
-    if (step < bootMessages.length) {
-      bootStatus.textContent = bootMessages[step];
-      step++;
+  const bootSequence = document.getElementById("bootSequence");
+  const bootFill = document.getElementById("bootFill");
+  const bootStatus = document.getElementById("bootStatus");
+  const skipSequence = document.getElementById("skipSequence");
+
+  const mainNav = document.getElementById("mainNav");
+  const menuToggle = document.getElementById("menuToggle");
+
+  const deepSpaceToggle = document.getElementById("deepSpaceToggle");
+
+  const bootCanvas = document.getElementById("bootCanvas");
+  const starsCanvas = document.getElementById("starsCanvas");
+  const orbitCanvas = document.getElementById("orbitCanvas");
+
+  const contactForm = document.getElementById("contactForm");
+  const formStatus = document.getElementById("formStatus");
+
+  // ------------------------------------------
+  // 2. BOOT SEQUENCE
+  // ------------------------------------------
+
+  let bootFinished = false;
+  let bootTimer = null;
+  let bootProgress = 0;
+
+  const bootMessages = [
+    "INITIALIZING SYSTEMS...",
+    "CONNECTING TO STAR MAP...",
+    "LOADING SCIENCE DATABASE...",
+    "CALIBRATING ORBITAL DISPLAY...",
+    "ALL SYSTEMS ONLINE."
+  ];
+
+  function finishBoot() {
+    if (bootFinished) return;
+
+    bootFinished = true;
+
+    if (bootTimer !== null) {
+      clearInterval(bootTimer);
+      bootTimer = null;
     }
 
-    if (progress >= 100) {
-      clearInterval(interval);
-      setTimeout(() => {
-        bootSequenceEl.classList.add("hidden");
-        mainContent.classList.remove("hidden");
-      }, 400);
+    if (bootFill) bootFill.style.width = "100%";
+    if (bootStatus) bootStatus.textContent = "SYSTEM ONLINE.";
+
+    if (bootSequence) {
+      bootSequence.classList.add("finished");
     }
-  }, 420);
-}
 
-skipBootBtn.addEventListener("click", () => {
-  bootSequenceEl.classList.add("hidden");
-  mainContent.classList.remove("hidden");
-});
+    // Show the main site even if the boot animation is skipped.
+    document.body.classList.add("system-ready");
 
-runBootSequence();
+    // Refresh canvas sizes after the main page becomes visible.
+    window.dispatchEvent(new Event("resize"));
+  }
 
-navLinks.forEach((link) => {
-  link.addEventListener("click", () => {
-    const target = link.dataset.target;
-    navLinks.forEach((item) => item.classList.toggle("active", item === link));
+  if (bootSequence) {
+    bootTimer = setInterval(() => {
+      bootProgress += 2;
+
+      if (bootFill) {
+        bootFill.style.width = `${Math.min(bootProgress, 100)}%`;
+      }
+
+      if (bootStatus) {
+        const messageIndex = Math.min(
+          Math.floor(bootProgress / 22),
+          bootMessages.length - 1
+        );
+
+        bootStatus.textContent = bootMessages[messageIndex];
+      }
+
+      if (bootProgress >= 100) {
+        finishBoot();
+      }
+    }, 55);
+  }
+
+  if (skipSequence) {
+    skipSequence.addEventListener("click", finishBoot);
+  }
+
+  // Fallback: the boot screen should never block the website forever.
+  window.setTimeout(finishBoot, 4500);
+
+  // ------------------------------------------
+  // 3. PAGE NAVIGATION
+  // ------------------------------------------
+
+  const navLinks = document.querySelectorAll("[data-panel]");
+  const panels = document.querySelectorAll(".panel");
+
+  function showPanel(panelId) {
+    const target = document.getElementById(panelId);
+
+    if (!target || !target.classList.contains("panel")) return;
+
     panels.forEach((panel) => {
-      panel.classList.toggle("active", panel.id === target);
+      panel.classList.toggle("active", panel.id === panelId);
     });
 
-    if (window.innerWidth <= 720) {
-      mainNav.classList.remove("open");
-    }
-  });
-});
+    navLinks.forEach((link) => {
+      const isActive = link.dataset.panel === panelId;
 
-document.querySelectorAll("[data-scroll]").forEach((el) => {
-  el.addEventListener("click", () => {
-    const target = el.dataset.scroll;
-    const section = document.getElementById(target);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
-});
+      link.classList.toggle("active", isActive);
 
-tabBtns.forEach((button) => {
-  button.addEventListener("click", () => {
-    tabBtns.forEach((btn) => btn.classList.toggle("active", btn === button));
-    const tab = button.dataset.tab;
-    document.querySelectorAll(".tab-content").forEach((content) => {
-      content.classList.toggle("active", content.id === tab);
-    });
-  });
-});
-
-menuToggle.addEventListener("click", () => {
-  mainNav.classList.toggle("open");
-});
-
-contactForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const button = contactForm.querySelector("button");
-  const originalText = button.textContent;
-  button.textContent = "MESSAGE QUEUED";
-  button.disabled = true;
-
-  setTimeout(() => {
-    button.textContent = originalText;
-    button.disabled = false;
-    contactForm.reset();
-  }, 1500);
-});
-
-deepSpaceToggle.addEventListener("click", () => {
-  document.body.classList.toggle("deep-space");
-  const active = document.body.classList.contains("deep-space");
-  document.body.style.background =
-    active
-      ? "radial-gradient(circle at top, rgba(54, 80, 180, 0.4), transparent 30%), radial-gradient(circle at bottom, rgba(124, 58, 237, 0.35), transparent 35%), linear-gradient(180deg, #010611 0%, #090d22 40%, #040a17 100%)"
-      : "";
-  deepSpaceToggle.textContent = active ? "NORMAL MODE" : "DEEP SPACE MODE";
-});
-
-function createStars(canvas, count = 120) {
-  const ctx = canvas.getContext("2d");
-  const stars = [];
-
-  function resize() {
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  }
-
-  for (let i = 0; i < count; i++) {
-    stars.push({
-      x: Math.random() * canvas.clientWidth,
-      y: Math.random() * canvas.clientHeight,
-      r: Math.random() * 2.2 + 0.6,
-      alpha: Math.random() * 0.8 + 0.2,
-      speed: Math.random() * 0.7 + 0.2
-    });
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const star of stars) {
-      star.y += star.speed;
-      if (star.y > canvas.clientHeight) {
-        star.y = 0;
-        star.x = Math.random() * canvas.clientWidth;
+      if (isActive) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
       }
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(255,255,255,${star.alpha})`;
-      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-      ctx.fill();
+    });
+
+    // Close the mobile menu after a selection.
+    if (mainNav) mainNav.classList.remove("open");
+
+    if (menuToggle) {
+      menuToggle.setAttribute("aria-expanded", "false");
     }
-    requestAnimationFrame(animate);
+
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth"
+    });
   }
 
-  resize();
-  animate();
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      showPanel(link.dataset.panel);
+    });
+  });
 
-  window.addEventListener("resize", resize);
-}
+  // Home section buttons that open another panel.
+  document.querySelectorAll("[data-scroll]").forEach((button) => {
+    button.addEventListener("click", () => {
+      showPanel(button.dataset.scroll);
+    });
+  });
 
-function createOrbitCanvas() {
-  const canvas = document.getElementById("orbitCanvas");
-  const ctx = canvas.getContext("2d");
+  // ------------------------------------------
+  // 4. MOBILE MENU
+  // ------------------------------------------
 
-  function resize() {
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  if (menuToggle && mainNav) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = mainNav.classList.toggle("open");
+
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "CLOSE ✕" : "MENU ☰";
+    });
   }
 
-  const centerX = () => canvas.clientWidth / 2;
-  const centerY = () => canvas.clientHeight / 2;
+  // ------------------------------------------
+  // 5. SPACE EXPLORER TABS
+  // ------------------------------------------
 
-  function draw(time) {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    ctx.clearRect(0, 0, width, height);
+  const tabButtons = document.querySelectorAll("[data-tab]");
+  const tabContents = document.querySelectorAll(".tab-content");
 
-    const cx = centerX();
-    const cy = centerY();
+  function showTab(tabId) {
+    const target = document.getElementById(tabId);
 
-    ctx.beginPath();
-    ctx.strokeStyle = "rgba(102,228,255,0.18)";
-    ctx.lineWidth = 1;
-    ctx.arc(cx, cy, 138, 0, Math.PI * 2);
-    ctx.stroke();
+    if (!target || !target.classList.contains("tab-content")) return;
 
-    ctx.beginPath();
-    ctx.strokeStyle = "rgba(156,107,255,0.18)";
-    ctx.lineWidth = 1;
-    ctx.arc(cx, cy, 196, 0, Math.PI * 2);
-    ctx.stroke();
+    tabButtons.forEach((button) => {
+      const isActive = button.dataset.tab === tabId;
 
-    const orbit1Angle = time * 0.00035;
-    const orbit2Angle = time * 0.00018;
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
 
-    const p1 = {
-      x: cx + Math.cos(orbit1Angle) * 138,
-      y: cy + Math.sin(orbit1Angle) * 138
+    tabContents.forEach((content) => {
+      content.classList.toggle("active", content.id === tabId);
+    });
+  }
+
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      showTab(button.dataset.tab);
+    });
+  });
+
+  // ------------------------------------------
+  // 6. DEEP SPACE MODE
+  // ------------------------------------------
+
+  if (deepSpaceToggle) {
+    deepSpaceToggle.addEventListener("click", () => {
+      const enabled = document.body.classList.toggle("deep-space");
+
+      deepSpaceToggle.textContent = enabled
+        ? "EXIT DEEP SPACE"
+        : "DEEP SPACE MODE";
+
+      deepSpaceToggle.setAttribute(
+        "aria-pressed",
+        String(enabled)
+      );
+    });
+  }
+
+  // ------------------------------------------
+  // 7. CONTACT FORM DEMO
+  // ------------------------------------------
+
+  if (contactForm && formStatus) {
+    contactForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      formStatus.textContent =
+        "DEMO ONLY: No message was sent. Connect an email service to enable delivery.";
+    });
+  }
+
+  // ------------------------------------------
+  // 8. CANVAS HELPERS
+  // ------------------------------------------
+
+  function setupCanvas(canvas) {
+    if (!canvas) return null;
+
+    const context = canvas.getContext("2d");
+    if (!context) return null;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+      canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+
+    resize();
+
+    return {
+      canvas,
+      context,
+      resize
     };
-
-    const p2 = {
-      x: cx + Math.cos(orbit2Angle + Math.PI / 2) * 196,
-      y: cy + Math.sin(orbit2Angle + Math.PI / 2) * 196
-    };
-
-    ctx.beginPath();
-    ctx.fillStyle = "#66e4ff";
-    ctx.arc(p1.x, p1.y, 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.fillStyle = "#9c6bff";
-    ctx.arc(p2.x, p2.y, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.fillStyle = "#dfefff";
-    ctx.arc(cx, cy, 16, 0, Math.PI * 2);
-    ctx.fill();
-
-    requestAnimationFrame(draw);
   }
 
-  resize();
-  requestAnimationFrame(draw);
-  window.addEventListener("resize", resize);
-}
+  // ------------------------------------------
+  // 9. ANIMATED STAR FIELD
+  // ------------------------------------------
 
-function createSkillsCanvas() {
-  const canvas = document.getElementById("skillsCanvas");
-  const ctx = canvas.getContext("2d");
-  const nodes = [
-    { x: 0.18, y: 0.7, label: "CANVA" },
-    { x: 0.35, y: 0.22, label: "EXCEL" },
-    { x: 0.58, y: 0.38, label: "DESIGN" },
-    { x: 0.8, y: 0.7, label: "ASTRO" },
-    { x: 0.5, y: 0.8, label: "DATA" }
+  const starSetup = setupCanvas(starsCanvas);
+  let stars = [];
+  let starWidth = 0;
+  let starHeight = 0;
+
+  function createStars() {
+    if (!starSetup) return;
+
+    const rect = starsCanvas.getBoundingClientRect();
+
+    starWidth = rect.width;
+    starHeight = rect.height;
+
+    const count = Math.min(
+      180,
+      Math.max(50, Math.floor((starWidth * starHeight) / 8500))
+    );
+
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * starWidth,
+      y: Math.random() * starHeight,
+      radius: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.7 + 0.2,
+      speed: Math.random() * 0.25 + 0.04,
+      phase: Math.random() * Math.PI * 2
+    }));
+  }
+
+  function drawStars(time = 0) {
+    if (!starSetup) return;
+
+    const { context } = starSetup;
+
+    context.clearRect(0, 0, starWidth, starHeight);
+
+    stars.forEach((star) => {
+      const twinkle =
+        0.55 + Math.sin(time * 0.001 * star.speed + star.phase) * 0.35;
+
+      context.beginPath();
+      context.arc(
+        star.x,
+        star.y,
+        star.radius,
+        0,
+        Math.PI * 2
+      );
+
+      context.fillStyle = `rgba(170, 225, 255, ${
+        Math.max(0.1, star.alpha * twinkle)
+      })`;
+
+      context.fill();
+    });
+
+    requestAnimationFrame(drawStars);
+  }
+
+  if (starSetup) {
+    createStars();
+    requestAnimationFrame(drawStars);
+  }
+
+  // ------------------------------------------
+  // 10. ORBITAL SOLAR SYSTEM ANIMATION
+  // ------------------------------------------
+
+  const orbitSetup = setupCanvas(orbitCanvas);
+  let orbitWidth = 0;
+  let orbitHeight = 0;
+
+  function resizeOrbit() {
+    if (!orbitSetup) return;
+
+    orbitSetup.resize();
+
+    const rect = orbitCanvas.getBoundingClientRect();
+    orbitWidth = rect.width;
+    orbitHeight = rect.height;
+  }
+
+  const planets = [
+    { orbit: 35, radius: 2, speed: 1.6, color: "#9da9bd" },
+    { orbit: 55, radius: 3, speed: 1.2, color: "#ffbf83" },
+    { orbit: 77, radius: 4, speed: 0.95, color: "#4e9cff" },
+    { orbit: 99, radius: 3, speed: 0.75, color: "#ff795f" },
+    { orbit: 130, radius: 8, speed: 0.42, color: "#e9bd91" },
+    { orbit: 160, radius: 7, speed: 0.32, color: "#e5d2a4" },
+    { orbit: 190, radius: 5, speed: 0.24, color: "#87edff" }
   ];
 
-  function resize() {
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  }
+  function drawOrbit(time = 0) {
+    if (!orbitSetup) return;
 
-  function draw(time) {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    ctx.clearRect(0, 0, width, height);
+    const { context } = orbitSetup;
 
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i];
-        const b = nodes[j];
-        ctx.beginPath();
-        ctx.strokeStyle = "rgba(102,228,255,0.18)";
-        ctx.moveTo(a.x * width, a.y * height);
-        ctx.lineTo(b.x * width, b.y * height);
-        ctx.stroke();
-      }
-    }
+    context.clearRect(0, 0, orbitWidth, orbitHeight);
 
-    nodes.forEach((node, idx) => {
-      const x = node.x * width;
-      const y = node.y * height;
+    const cx = orbitWidth / 2;
+    const cy = orbitHeight / 2;
+    const scale = Math.min(1, orbitWidth / 440, orbitHeight / 440);
 
-      const glow = 0.5 + Math.sin(time * 0.002 + idx) * 0.35;
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(102,228,255,${0.4 + glow})`;
-      ctx.arc(x, y, 14, 0, Math.PI * 2);
-      ctx.fill();
+    context.save();
+    context.translate(cx, cy);
+    context.scale(scale, scale);
 
-      ctx.beginPath();
-      ctx.fillStyle = "#eaf9ff";
-      ctx.arc(x, y, 5, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#d9f5ff";
-      ctx.font = "11px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(node.label, x, y - 20);
+    // Orbit rings.
+    planets.forEach((planet) => {
+      context.beginPath();
+      context.arc(0, 0, planet.orbit, 0, Math.PI * 2);
+      context.strokeStyle = "rgba(94, 181, 255, 0.22)";
+      context.lineWidth = 1;
+      context.stroke();
     });
 
-    requestAnimationFrame(draw);
-  }
+    // Sun glow.
+    const glow = context.createRadialGradient(0, 0, 3, 0, 0, 32);
 
-  resize();
-  requestAnimationFrame(draw);
-  window.addEventListener("resize", resize);
-}
+    glow.addColorStop(0, "rgba(255, 242, 165, 1)");
+    glow.addColorStop(0.35, "rgba(255, 165, 60, 0.7)");
+    glow.addColorStop(1, "rgba(255, 130, 35, 0)");
 
-function createConstellationCanvas() {
-  const canvas = document.getElementById("constellationCanvas");
-  const ctx = canvas.getContext("2d");
-  const points = [
-    { x: 0.12, y: 0.7 },
-    { x: 0.25, y: 0.42 },
-    { x: 0.35, y: 0.78 },
-    { x: 0.48, y: 0.35 },
-    { x: 0.62, y: 0.6 },
-    { x: 0.77, y: 0.4 },
-    { x: 0.88, y: 0.72 }
-  ];
+    context.beginPath();
+    context.arc(0, 0, 32, 0, Math.PI * 2);
+    context.fillStyle = glow;
+    context.fill();
 
-  function resize() {
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  }
+    context.beginPath();
+    context.arc(0, 0, 12, 0, Math.PI * 2);
+    context.fillStyle = "#ffe9a3";
+    context.fill();
 
-  function draw() {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+    // Planets move around the Sun.
+    planets.forEach((planet, index) => {
+      const angle =
+        time * 0.00015 * planet.speed + index * 1.1;
 
-    ctx.clearRect(0, 0, width, height);
+      const x = Math.cos(angle) * planet.orbit;
+      const y = Math.sin(angle) * planet.orbit;
 
-    for (let i = 0; i < points.length; i++) {
-      const a = points[i];
-      for (let j = i + 1; j < points.length; j++) {
-        const b = points[j];
-        ctx.beginPath();
-        ctx.strokeStyle = "rgba(102,228,255,0.22)";
-        ctx.moveTo(a.x * width, a.y * height);
-        ctx.lineTo(b.x * width, b.y * height);
-        ctx.stroke();
+      context.beginPath();
+      context.arc(x, y, planet.radius, 0, Math.PI * 2);
+      context.fillStyle = planet.color;
+      context.fill();
+
+      if (index === 5) {
+        context.beginPath();
+        context.ellipse(
+          x,
+          y,
+          planet.radius * 1.8,
+          planet.radius * 0.65,
+          -0.35,
+          0,
+          Math.PI * 2
+        );
+
+        context.strokeStyle = "rgba(230, 220, 185, 0.8)";
+        context.lineWidth = 1.5;
+        context.stroke();
       }
+    });
+
+    context.restore();
+
+    requestAnimationFrame(drawOrbit);
+  }
+
+  if (orbitSetup) {
+    resizeOrbit();
+    requestAnimationFrame(drawOrbit);
+  }
+
+  // ------------------------------------------
+  // 11. RESPONSIVE CANVAS RESIZING
+  // ------------------------------------------
+
+  let resizeTimeout = null;
+
+  window.addEventListener("resize", () => {
+    if (resizeTimeout !== null) {
+      clearTimeout(resizeTimeout);
     }
 
-    points.forEach((point) => {
-      const x = point.x * width;
-      const y = point.y * height;
-      ctx.beginPath();
-      ctx.fillStyle = "#66e4ff";
-      ctx.arc(x, y, 4, 0, Math.PI * 2);
-      ctx.fill();
-    });
-  }
-
-  resize();
-  draw();
-  window.addEventListener("resize", resize);
-}
-
-function createBootCanvas() {
-  const canvas = document.getElementById("bootCanvas");
-  const ctx = canvas.getContext("2d");
-  const particles = [];
-
-  function resize() {
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  }
-
-  for (let i = 0; i < 110; i++) {
-    particles.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      r: Math.random() * 2.2 + 0.5,
-      alpha: Math.random() * 0.8 + 0.2
-    });
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (const p of particles) {
-      p.y += 0.5;
-      if (p.y > canvas.clientHeight) {
-        p.y = 0;
-        p.x = Math.random() * canvas.clientWidth;
+    resizeTimeout = window.setTimeout(() => {
+      if (starSetup) {
+        starSetup.resize();
+        createStars();
       }
 
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
+      if (orbitSetup) {
+        resizeOrbit();
+      }
+
+      if (bootSequence && !bootFinished && bootCanvas) {
+        const bootSetup = setupCanvas(bootCanvas);
+
+        if (bootSetup) {
+          bootSetup.context.clearRect(
+            0,
+            0,
+            bootCanvas.width,
+            bootCanvas.height
+          );
+        }
+      }
+    }, 120);
+  });
+
+  // ------------------------------------------
+  // 12. KEYBOARD SHORTCUTS
+  // ------------------------------------------
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (mainNav) mainNav.classList.remove("open");
+
+      if (menuToggle) {
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.textContent = "MENU ☰";
+      }
     }
+  });
 
-    requestAnimationFrame(animate);
-  }
+  // ------------------------------------------
+  // 13. INITIALIZE
+  // ------------------------------------------
 
-  resize();
-  animate();
-  window.addEventListener("resize", resize);
-}
+  showTab("solar");
 
-createBootCanvas();
-createStars(document.getElementById("starsCanvas"), 150);
-createOrbitCanvas();
-createSkillsCanvas();
-createConstellationCanvas();
+  console.log(
+    "%c SCIENCE OS 3000 ONLINE ",
+    "background:#061426;color:#35e7ff;padding:8px;font-weight:bold;"
+  );
+
+});
