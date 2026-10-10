@@ -1,0 +1,1011 @@
+
+/* ==========================================
+   IQTIDAAR ARAFATH — YEAR 3000 SCIENCE OS
+   Futuristic space portfolio
+========================================== */
+
+:root {
+  --bg: #050914;
+  --bg-light: #0a1427;
+  --panel: rgba(12, 27, 49, 0.82);
+  --cyan: #35e7ff;
+  --blue: #4a83ff;
+  --purple: #a36bff;
+  --text: #eaf7ff;
+  --muted: #94a9c5;
+  --border: rgba(53, 231, 255, 0.25);
+  --shadow: 0 0 35px rgba(53, 231, 255, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 15% 15%, #102047 0%, transparent 38%),
+    radial-gradient(ellipse at 85% 80%, #191038 0%, transparent 35%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--cyan);
+  color: #020713;
+}
+
+/* Utility */
+
+.hidden {
+  display: none !important;
+}
+
+.container {
+  width: min(1160px, 90%);
+  margin-inline: auto;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  color: var(--cyan);
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+}
+
+.lead {
+  color: var(--muted);
+  max-width: 620px;
+  margin-top: 22px;
+  font-size: 1.08rem;
+}
+
+/* Boot screen */
+
+.boot-sequence {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at center, #0b1b37 0%, #050914 60%);
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.boot-sequence.finished {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.boot-canvas,
+.stars-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.boot-panel {
+  position: relative;
+  z-index: 1;
+  width: min(680px, 90%);
+  padding: 38px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(4, 11, 25, 0.7);
+  box-shadow: 0 0 70px rgba(53, 231, 255, 0.12);
+  backdrop-filter: blur(14px);
+  animation: panelEnter 1s ease both;
+}
+
+.boot-logo {
+  width: 112px;
+  margin: 0 auto 20px;
+}
+
+.boot-logo svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.boot-logo text {
+  fill: var(--cyan);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.ring {
+  fill: none;
+  stroke-width: 1.5;
+  transform-origin: 60px 60px;
+}
+
+.ring-one {
+  stroke: var(--cyan);
+  animation: spin 12s linear infinite;
+}
+
+.ring-two {
+  stroke: var(--purple);
+  animation: spin 8s linear infinite reverse;
+}
+
+.ring-three {
+  stroke: var(--blue);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.boot-title {
+  color: var(--cyan);
+  font-size: clamp(1.5rem, 5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.boot-subtitle {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+}
+
+.boot-bar {
+  height: 5px;
+  margin-top: 28px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #17243b;
+}
+
+.boot-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  box-shadow: 0 0 18px var(--cyan);
+  transition: width 0.2s ease;
+}
+
+.boot-status {
+  margin-top: 12px;
+  color: var(--cyan);
+  font-family: monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+}
+
+.skip-btn {
+  margin-top: 22px;
+  padding: 11px 20px;
+  border: 1px solid var(--cyan);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  transition: 0.25s;
+}
+
+.skip-btn:hover {
+  background: var(--cyan);
+  color: var(--bg);
+  box-shadow: 0 0 25px rgba(53, 231, 255, 0.3);
+}
+
+/* Main layout */
+
+.main-content {
+  min-height: 100vh;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+  background: rgba(5, 9, 20, 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.nav-container {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--cyan);
+  border-radius: 50%;
+  color: var(--cyan);
+  font-weight: 800;
+  box-shadow: 0 0 18px rgba(53, 231, 255, 0.2);
+}
+
+.brand-text {
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.nav-link {
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: 0.25s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  border-color: var(--border);
+  background: rgba(53, 231, 255, 0.08);
+  color: var(--cyan);
+}
+
+.menu-toggle {
+  display: none;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--cyan);
+}
+
+/* Panels and sections */
+
+.panel {
+  display: none;
+  min-height: 75vh;
+  padding: 90px 0;
+  animation: fadeUp 0.55s ease both;
+}
+
+.panel.active {
+  display: block;
+}
+
+#home {
+  position: relative;
+  padding-top: 80px;
+  overflow: hidden;
+}
+
+#home > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 55px;
+  min-height: 420px;
+}
+
+.hero h1 {
+  margin: 15px 0;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+  background: linear-gradient(110deg, #ffffff, var(--cyan), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  margin-top: 30px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 13px 19px;
+  border-radius: 7px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  transition: 0.25s;
+}
+
+.primary-btn {
+  border: 1px solid var(--cyan);
+  background: var(--cyan);
+  color: #04101d;
+}
+
+.primary-btn:hover {
+  box-shadow: 0 0 28px rgba(53, 231, 255, 0.4);
+  transform: translateY(-3px);
+}
+
+.secondary-btn {
+  border: 1px solid var(--border);
+  background: rgba(53, 231, 255, 0.04);
+  color: var(--cyan);
+}
+
+.secondary-btn:hover {
+  background: rgba(53, 231, 255, 0.13);
+  transform: translateY(-3px);
+}
+
+.mission-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #60ffb2;
+  box-shadow: 0 0 12px #60ffb2;
+}
+
+.hero-right {
+  min-width: 0;
+}
+
+.orbit-canvas {
+  display: block;
+  width: 100%;
+  height: 390px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 65px;
+}
+
+.feature-card,
+.info-card,
+.knowledge-card,
+.planet-card,
+.skill-card,
+.achievement-card,
+.mission-card,
+.contact-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(145deg, var(--panel), rgba(7, 15, 31, 0.8));
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.feature-card {
+  padding: 24px;
+}
+
+.feature-card:hover,
+.info-card:hover,
+.knowledge-card:hover,
+.planet-card:hover,
+.skill-card:hover,
+.achievement-card:hover,
+.mission-card:hover,
+.contact-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(53, 231, 255, 0.65);
+  box-shadow: 0 12px 38px rgba(53, 231, 255, 0.1);
+}
+
+.feature-icon {
+  margin-bottom: 12px;
+  font-size: 1.8rem;
+}
+
+.feature-card h3,
+.info-card h3,
+.knowledge-card h3,
+.planet-card h3,
+.skill-card h3,
+.achievement-card h3,
+.mission-card h3,
+.contact-card h3 {
+  color: var(--cyan);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.feature-card p,
+.knowledge-card p,
+.planet-card p,
+.mission-card p {
+  margin-top: 9px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.secret-line {
+  padding-top: 60px;
+  text-align: center;
+}
+
+.pulse-text {
+  color: var(--cyan);
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* Section headings */
+
+.section-heading {
+  margin-bottom: 35px;
+}
+
+.section-heading h2 {
+  margin-top: 8px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 0.04em;
+}
+
+.section-heading h2::after {
+  content: "";
+  display: block;
+  width: 75px;
+  height: 3px;
+  margin-top: 12px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+/* Identity */
+
+.identity-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 22px;
+}
+
+.info-card {
+  padding: 27px;
+}
+
+.info-card.large {
+  grid-row: span 1;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 15px;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(148, 169, 197, 0.12);
+}
+
+.info-row:last-child {
+  border-bottom: 0;
+}
+
+.label {
+  color: var(--cyan);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.value {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.passion-list {
+  margin-top: 15px;
+  list-style: none;
+}
+
+.passion-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(148, 169, 197, 0.12);
+  color: var(--muted);
+}
+
+.vision-box {
+  margin-top: 22px;
+  padding: 28px;
+  border: 1px solid rgba(163, 107, 255, 0.35);
+  border-radius: 14px;
+  background: linear-gradient(120deg, rgba(163, 107, 255, 0.09), transparent);
+}
+
+.vision-box h3 {
+  color: var(--purple);
+  letter-spacing: 0.14em;
+}
+
+.vision-box p {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+/* Knowledge tabs */
+
+.tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  padding: 11px 17px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: rgba(53, 231, 255, 0.12);
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.tab-content {
+  display: none;
+  animation: fadeUp 0.4s ease both;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.knowledge-grid,
+.planet-grid,
+.skills-grid,
+.achievements-grid,
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.knowledge-card,
+.planet-card,
+.skill-card,
+.achievement-card,
+.mission-card {
+  padding: 25px;
+}
+
+.knowledge-card strong {
+  color: var(--text);
+}
+
+/* Skills */
+
+.skills-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.skill-card {
+  min-height: 145px;
+}
+
+.skill-card p,
+.achievement-card p,
+.contact-card p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.skill-level {
+  height: 5px;
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #1b2940;
+}
+
+.skill-level span {
+  display: block;
+  width: var(--level, 65%);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+
+/* Achievements */
+
+.achievements-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.achievement-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-card::after {
+  content: "✦";
+  position: absolute;
+  right: 18px;
+  top: 10px;
+  color: rgba(53, 231, 255, 0.22);
+  font-size: 3rem;
+}
+
+.achievement-card h3 {
+  padding-right: 30px;
+}
+
+.achievement-count {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--cyan);
+  font-size: 0.75rem;
+}
+
+/* Missions */
+
+.missions-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mission-card {
+  position: relative;
+}
+
+.mission-card .mission-number {
+  display: inline-block;
+  margin-bottom: 13px;
+  color: var(--purple);
+  font-family: monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+}
+
+/* Contact */
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 22px;
+}
+
+.contact-card {
+  padding: 28px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.contact-form label {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  outline: none;
+  background: rgba(3, 9, 21, 0.8);
+  color: var(--text);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(53, 231, 255, 0.08);
+}
+
+.contact-form textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.contact-form button {
+  justify-self: start;
+}
+
+.site-footer {
+  padding: 25px 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+/* Deep space mode */
+
+body.deep-space {
+  --bg: #000;
+  --bg-light: #03030a;
+  --panel: rgba(3, 8, 20, 0.95);
+  --cyan: #a6fff9;
+  --blue: #3d66ff;
+  --purple: #7446ff;
+  --border: rgba(166, 255, 249, 0.32);
+}
+
+body.deep-space .feature-card,
+body.deep-space .info-card,
+body.deep-space .knowledge-card,
+body.deep-space .planet-card {
+  box-shadow: 0 0 35px rgba(61, 102, 255, 0.08);
+}
+
+/* Motion */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.65; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Tablet */
+
+@media (max-width: 950px) {
+  .nav-container {
+    flex-wrap: wrap;
+    padding-block: 12px;
+  }
+
+  .nav {
+    gap: 2px;
+  }
+
+  .nav-link {
+    padding: 8px;
+    font-size: 0.66rem;
+  }
+
+  .hero {
+    gap: 25px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.3rem, 5vw, 3.7rem);
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 680px) {
+  .container {
+    width: min(100% - 32px, 520px);
+  }
+
+  .nav-container {
+    min-height: 68px;
+  }
+
+  .brand-text {
+    font-size: 0.85rem;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    width: 100%;
+    padding: 12px 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 11px;
+    text-align: left;
+  }
+
+  .panel {
+    padding: 58px 0;
+  }
+
+  #home {
+    padding-top: 45px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    min-height: auto;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.3rem, 11vw, 3.8rem);
+  }
+
+  .hero-right {
+    order: -1;
+  }
+
+  .orbit-canvas {
+    height: 230px;
+  }
+
+  .feature-grid,
+  .identity-grid,
+  .knowledge-grid,
+  .planet-grid,
+  .skills-grid,
+  .achievements-grid,
+  .missions-grid,
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid {
+    margin-top: 35px;
+  }
+
+  .feature-card,
+  .info-card,
+  .knowledge-card,
+  .planet-card,
+  .skill-card,
+  .achievement-card,
+  .mission-card,
+  .contact-card {
+    padding: 21px;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .boot-panel {
+    padding: 26px 18px;
+  }
+
+  .boot-title {
+    letter-spacing: 0.08em;
+  }
+
+  .boot-subtitle {
+    font-size: 0.65rem;
+    line-height: 1.8;
+  }
+
+  .mission-tag {
+    font-size: 0.6rem;
+    overflow-wrap: anywhere;
+  }
+
+  .pulse-text {
+    letter-spacing: 0.2em;
+  }
+}
+
+/* Reduced motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
