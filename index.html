@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Iqtidaar Arafath - Year 3000 Personal Science Operating System. A futuristic portfolio exploring space, astrophysics, mathematics, technology, and graphic design.">
+    <meta name="theme-color" content="#0a0e27">
+    <title>IQTIDAAR ARAFATH — Year 3000 Science Operating System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BOOT SEQUENCE OVERLAY -->
+    <div id="bootSequence" class="boot-sequence">
+        <div class="boot-container">
+            <div class="boot-logo">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#00d9ff" stroke-width="2" class="boot-circle-1"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#7c3aed" stroke-width="2" class="boot-circle-2"/>
+                    <circle cx="50" cy="50" r="25" fill="none" stroke="#00d9ff" stroke-width="2" class="boot-circle-3"/>
+                    <text x="50" y="58" text-anchor="middle" fill="#00d9ff" font-size="20" font-weight="bold" font-family="'Courier New', monospace">IA</text>
+                </svg>
+            </div>
+            <div class="boot-text">
+                <p class="boot-title">IQTIDAAR ARAFATH</p>
+                <p class="boot-subtitle">YEAR 3000 PERSONAL SCIENCE OPERATING SYSTEM</p>
+                <div class="boot-progress">
+                    <div class="boot-progress-bar"></div>
+                </div>
+                <div class="boot-status">
+                    <span id="bootStatus">INITIALIZING SYSTEMS...</span>
+                </div>
+            </div>
+            <button id="skipBootBtn" class="skip-boot-btn">SKIP SEQUENCE →</button>
+        </div>
+        <canvas id="bootCanvas" class="boot-canvas"></canvas>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent" class="main-content hidden">
+        <!-- HEADER / NAVIGATION -->
+        <header class="header">
+            <div class="header-container">
+                <div class="logo">
+                    <svg viewBox="0 0 60 60" width="40" height="40">
+                        <circle cx="30" cy="30" r="27" fill="none" stroke="#00d9ff" stroke-width="1.5"/>
+                        <circle cx="30" cy="30" r="20" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+                        <circle cx="30" cy="30" r="13" fill="none" stroke="#00d9ff" stroke-width="1.5"/>
+                        <text x="30" y="35" text-anchor="middle" fill="#00d9ff" font-size="14" font-weight="bold" font-family="'Courier New', monospace">IA</text>
+                    </svg>
+                </div>
+                <nav class="nav-menu">
+                    <button class="nav-item active" data-section="home">HOME</button>
+                    <button class="nav-item" data-section="identity">IDENTITY</button>
+                    <button class="nav-item" data-section="knowledge">KNOWLEDGE</button>
+                    <button class="nav-item" data-section="skills">SKILLS</button>
+                    <button class="nav-item" data-section="achievements">ACHIEVEMENTS</button>
+                    <button class="nav-item" data-section="missions">MISSIONS</button>
+                    <button class="nav-item" data-section="contact">CONTACT</button>
+                </nav>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+            </div>
+        </header>
+
+        <!-- HOME SECTION -->
+        <section id="homeSection" class="section active">
+            <div class="section-content">
+                <canvas id="starsCanvas" class="stars-canvas"></canvas>
+                <div class="home-hero">
+                    <div class="hero-text">
+                        <h1 class="hero-title">IQTIDAAR ARAFATH</h1>
+                        <p class="hero-subtitle">PERSONAL SCIENCE OPERATING SYSTEM</p>
+                        <p class="hero-description">
+                            Exploring the cosmos through astrophysics, mathematics, technology, and design.<br>
+                            <span class="pulse">CLASS 7 • AL AMIN ACADEMY SCHOOL AND COLLEGE</span>
+                        </p>
+                        <div class="hero-cta">
+                            <button class="btn-primary" onclick="scrollToSection('identity')">EXPLORE IDENTITY</button>
+                            <button class="btn-secondary" onclick="toggleDeepSpace()">DEEP SPACE MODE</button>
+                        </div>
+                    </div>
+                    <div class="hero-visualization">
+                        <canvas id="orbitCanvas" class="orbit-canvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌌</div>
+                        <h3>ASTRONOMY</h3>
+                        <p>Exploring celestial wonders and cosmic phenomena</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">∑</div>
+                        <h3>MATHEMATICS</h3>
+                        <p>Solving universal equations and patterns</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚛</div>
+                        <h3>SCIENCE</h3>
+                        <p>Understanding the laws of nature and physics</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💻</div>
+                        <h3>TECHNOLOGY</h3>
+                        <p>Building futuristic digital experiences</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>DESIGN</h3>
+                        <p>Creating visual harmony and innovation</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔬</div>
+                        <h3>RESEARCH</h3>
+                        <p>Investigating unknowns and discovering truth</p>
+                    </div>
+                </div>
+
+                <div class="easter-egg-hint">
+                    <span class="glitch" data-text="KEEP LOOKING UP" title="Secret message - hover over stars">KEEP LOOKING UP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- IDENTITY SECTION -->
+        <section id="identitySection" class="section">
+            <div class="section-content">
+                <h2 class="section-title">IDENTITY</h2>
+                <div class="identity-container">
+                    <div class="identity-card primary">
+                        <div class="card-header">PERSONAL PROFILE</div>
+                        <div class="card-content">
+                            <div class="profile-item">
+                                <span class="label">NAME:</span>
+                                <span class="value">Iqtidaar Arafath</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="label">EDUCATION:</span>
+                                <span class="value">Class 7 • Al Amin Academy School And College</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="label">PRIMARY INTERESTS:</span>
+                                <span class="value">Science, Space, Mathematics, Technology, Graphic Design</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="label">MISSION:</span>
+                                <span class="value">Exploring the universe through multiple disciplines</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="identity-card secondary">
+                        <div class="card-header">PASSION AREAS</div>
+                        <div class="card-content">
+                            <div class="passion-item">
+                                <span class="passion-icon">🌠</span>
+                                <span class="passion-text">Astrophysics & Astronomy</span>
+                            </div>
+                            <div class="passion-item">
+                                <span class="passion-icon">📐</span>
+                                <span class="passion-text">Mathematical Exploration</span>
+                            </div>
+                            <div class="passion-item">
+                                <span class="passion-icon">🔭</span>
+                                <span class="passion-text">Sky Observation</span>
+                            </div>
+                            <div class="passion-item">
+                                <span class="passion-icon">💡</span>
+                                <span class="passion-text">Scientific Discovery</span>
+                            </div>
+                            <div class="passion-item">
+                                <span class="passion-icon">🎨</span>
+                                <span class="passion-text">Creative Design</span>
+                            </div>
+                            <div class="passion-item">
+                                <span class="passion-icon">🚀</span>
+                                <span class="passion-text">Future Technology</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vision-section">
+                    <h3 class="vision-title">VISION</h3>
+                    <div class="vision-content">
+                        <p>As a young scientist and creative thinker, I am driven to understand the cosmos and apply that knowledge to help humanity. My passion for astronomy and space exploration fuels my desire to pursue careers that combine scientific rigor with practical impact on people's lives.</p>
+                        <p>Through continuous learning, competition participation, and creative expression, I am building a foundation for a future dedicated to discovery and service.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KNOWLEDGE SECTION -->
+        <section id="knowledgeSection" class="section">
+            <div class="section-content">
+                <h2 class="section-title">KNOWLEDGE</h2>
+                
+                <div class="knowledge-nav">
+                    <button class="knowledge-tab active" data-tab="astronomy">ASTRONOMY</button>
+                    <button class="knowledge-tab" data-tab="planets">CELESTIAL BODIES</button>
+                    <button class="knowledge-tab" data-tab="phenomena">PHENOMENA</button>
+                </div>
+
+                <div class="knowledge-tab-content" id="astronomyTab">
+                    <div class="knowledge-card">
+                        <h3>THE SUN</h3>
+                        <p><strong>Type:</strong> G-type main-sequence star (Yellow Dwarf)</p>
+                        <p><strong>Age:</strong> ~4.6 billion years</p>
+                        <p><strong>Diameter:</strong> 1,391,000 km (109× Earth)</p>
+                        <p><strong>Surface Temperature:</strong> ~5,778 K</p>
+                        <p><strong>Significance:</strong> The Sun is the gravitational center of our solar system, providing energy and heat that sustains all life on Earth.</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>THE MOON</h3>
+                        <p><strong>Type:</strong> Natural satellite of Earth</p>
+                        <p><strong>Diameter:</strong> 3,474 km (27% of Earth)</p>
+                        <p><strong>Distance from Earth:</strong> ~384,400 km</p>
+                        <p><strong>Orbital Period:</strong> 27.3 days</p>
+                        <p><strong>Significance:</strong> The Moon influences Earth's tides, stabilizes our planet's axial tilt, and has been humanity's first destination in space exploration.</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>STARS</h3>
+                        <p><strong>Definition:</strong> Massive, luminous spheres of plasma held together by gravity</p>
+                        <p><strong>Classification:</strong> Hertzsprung-Russell diagram classifies stars by temperature and luminosity</p>
+                        <p><strong>Life Cycle:</strong> Main sequence → Red Giant → White Dwarf (or supergiant phases)</p>
+                        <p><strong>Significance:</strong> Stars are the primary sources of light, heat, and heavy elements in the universe.</p>
+                    </div>
+
+                    <div class="knowledge-card">
+                        <h3>GALAXIES</h3>
+                        <p><strong>Definition:</strong> Massive systems containing billions to trillions of stars</p>
+                        <p><strong>Types:</strong> Spiral, Elliptical, Lenticular, Irregular</p>
+                        <p><strong>Our Galaxy:</strong> The Milky Way is a large barred spiral galaxy ~100,000 light-years across</p>
+                        <p><strong>Significance:</strong> Galaxies are the largest gravitationally-bound structures in the universe.</p>
+                    </div>
+                </div>
+
+                <div class="knowledge-tab-content hidden" id="planetsTab">
+                    <div class="planets-grid">
+                        <div class="planet-card">
+                            <h3>MERCURY</h3>
+                            <p>Smallest planet, closest to the Sun. Extreme temperature variations due to lack of atmosphere.</p>
+                        </div>
+                        <div class="planet-card">
+                            <h3>VENUS</h3>
+                            <p>Hottest planet with a dense, toxic atmosphere. Rotates backwards relative to other planets.</p>
+                        </div>
+                        <div class="planet-card">
+                            <h3>EARTH</h3>
+                            <p>Our home. The only known planet to harbor life. Liquid water and protective magnetic field.</p>
+                        </div>
+                        <div class="planet-card">
+                            <h3>MARS</h3>
+                            <p>The Red Planet. Evidence of past water. Future target for human space exploration.</p>
+                        </div>
+                        <div class="planet-card">
+                            <h3>JUPITER</h3>
+                            <p>Gas giant with the Great Red Spot. Largest planet in our solar system. 79+ known moons.</p>
+                        </div>
+                        <div class="planet-card">
+                            <h3>SATURN</h3>
+                            <p>Iconic ringed planet. Second-largest planet. 83+ known moons including Titan.</p>
+                        </div>
+                        <div class="planet-card">
+                            <h3>URANUS</h3>
+                            <p>Ice giant with extreme axial tilt (98°). Rotates on its side relative to orbit.</p>
+                        </div>
+                        <div class="planet-card">
+                            <h3>NEPTUNE</h3>
+                            <p>Windiest planet. Deepest blue color. 14+ known moons. Furthest from the Sun.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="knowledge-tab-content hidden" id="phenomenaTab">
+                    <div class="phenomena-grid">
+                        <div class="phenomenon-card">
+                            <h3>NEBULAE</h3>
+                            <p>Giant clouds of gas and dust where stars are born. Can emit, reflect, or absorb light creating stunning visual displays.</p>
+                        </div>
+                        <div class="phenomenon-card">
+                            <h3>BLACK HOLES</h3>
+                            <p>Regions of spacetime with extreme gravity where nothing, not even light, can escape. Result from massive star collapse.</p>
+                        </div>
+                        <div class="phenomenon-card">
+                            <h3>SUPERNOVAE</h3>
+                            <p>Extremely energetic stellar explosions that briefly outshine entire galaxies. Create and scatter heavy elements.</p>
+                        </div>
+                        <div class="phenomenon-card">
+                            <h3>COMETS</h3>
+                            <p>Icy bodies that develop tails when approaching the Sun. Ancient messengers from the outer solar system.</p>
+                        </div>
+                        <div class="phenomenon-card">
+                            <h3>SOLAR FLARES</h3>
+                            <p>Sudden, intense bursts of electromagnetic radiation from the Sun. Can affect Earth's magnetosphere.</p>
+                        </div>
+                        <div class="phenomenon-card">
+                            <h3>AURORAS</h3>
+                            <p>Natural light displays in Earth's atmosphere. Result from solar wind interactions with magnetic field. Northern/Southern Lights.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skillsSection" class="section">
+            <div class="section-content">
+                <h2 class="section-title">SKILLS NETWORK</h2>
+                <canvas id="skillsCanvas" class="skills-canvas"></canvas>
+                
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-icon">🎨</div>
+                        <h3>Graphic Design</h3>
+                        <p>Visual communication and creative design using modern tools</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">📊</div>
+                        <h3>Canva</h3>
+                        <p>Digital design platform for creating visual content</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">📈</div>
+                        <h3>Excel</h3>
+                        <p>Data analysis, spreadsheets, and quantitative problem-solving</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">✍️</div>
+                        <h3>Data Entry</h3>
+                        <p>Accurate and efficient data organization and management</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">🔍</div>
+                        <h3>Web Research</h3>
+                        <p>Finding, analyzing, and synthesizing information from diverse sources</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">📊</div>
+                        <h3>Data Analysis</h3>
+                        <p>Interpreting data to draw meaningful conclusions and insights</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">🔭</div>
+                        <h3>Sky Observation</h3>
+                        <p>Observational astronomy and celestial navigation</p>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">🌌</div>
+                        <h3>Astrophysics</h3>
+                        <p>Understanding the physics of stars, galaxies, and cosmology</p>
+                    </div>
+                </div>
+
+                <div class="skill-proficiency">
+                    <h3 class="skill-proficiency-title">SKILL INTEGRATION</h3>
+                    <p>These skills form a interconnected network, with graphic design and data analysis supporting scientific exploration, while astrophysics and sky observation drive research questions that require web research and Excel analysis.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACHIEVEMENTS SECTION -->
+        <section id="achievementsSection" class="section">
+            <div class="section-content">
+                <h2 class="section-title">ACHIEVEMENT CONSTELLATION</h2>
+                <canvas id="constellationCanvas" class="constellation-canvas"></canvas>
+                
+                <div class="achievements-container">
+                    <div class="achievement-category">
+                        <div class="category-header">BDOAA (Bangladesh Detailed Observation Astronomy Association)</div>
+                        <div class="achievement-list">
+                            <div class="achievement-badge">Nationalist — 2×</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-category">
+                        <div class="category-header">GSO (Global Science Olympiad)</div>
+                        <div class="achievement-list">
+                            <div class="achievement-badge">Nationalist — 2×</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-category">
+                        <div class="category-header">BDJSO (Bangladesh Junior Science Olympiad)</div>
+                        <div class="achievement-list">
+                            <div class="achievement-badge">Nationalist — 3×</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-category">
+                        <div class="category-header">ICTO (International Computer & Technology Olympiad)</div>
+                        <div class="achievement-list">
+                            <div class="achievement-badge">Nationalist — 1×</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-category">
+                        <div class="category-header">IACC (International Academic Creativity Challenge)</div>
+                        <div class="achievement-list">
+                            <div class="achievement-badge">Nationalist — 1×</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-category">
+                        <div class="category-header">SEO (Science Educators' Olympiad)</div>
+                        <div class="achievement-list">
+                            <div class="achievement-badge">Nationalist — 1×</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-category">
+                        <div class="category-header">BDMO (Bangladesh Digital Mathematics Olympiad)</div>
+                        <div class="achievement-list">
+                            <div class="achievement-badge">Nationalist — 1×</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-summary">
+                    <h3>TOTAL ACHIEVEMENTS</h3>
+                    <div class="summary-stats">
+                        <div class="stat">
+                            <span class="stat-number">7</span>
+                            <span class="stat-label">Competition Categories</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">11</span>
+                            <span class="stat-label">Nationalist Titles</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSIONS SECTION -->
+        <section id="missionsSection" class="section">
+            <div class="section-content">
+                <h2 class="section-title">MISSION CONTROL</h2>
+                
+                <div class="missions-intro">
+                    <p>Two critical missions define my future trajectory. Both require dedication, continuous learning, and the intersection of scientific knowledge with humanitarian purpose.</p>
+                </div>
+
+                <div class="missions-container">
+                    <div class="mission-card primary-mission">
+                        <div class="mission-header">
+                            <div class="mission-icon">🔭</div>
+                            <h3>MISSION: ASTRONOMER</h3>
+                        </div>
+                        <div class="mission-content">
+                            <p class="mission-description">Dedicate a career to understanding the universe through observational and theoretical astrophysics.</p>
+                            <div class="mission-objectives">
+                                <h4>KEY OBJECTIVES:</h4>
+                                <ul>
+                                    <li>Master advanced mathematics and physics</li>
+                                    <li>Develop observational and analytical skills</li>
+                                    <li>Contribute to astronomical research and discovery</li>
+                                    <li>Share cosmic knowledge with the world</li>
+                                    <li>Explore potential of space exploration</li>
+                                </ul>
+                            </div>
+                            <div class="mission-progress">
+                                <span class="progress-label">CURRENT PHASE:</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 35%"></div>
+                                </div>
+                                <span class="progress-status">FOUNDATION BUILDING</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mission-card secondary-mission">
+                        <div class="mission-header">
+                            <div class="mission-icon">⚕️</div>
+                            <h3>MISSION: DOCTOR</h3>
+                        </div>
+                        <div class="mission-content">
+                            <p class="mission-description">Build a career in medicine dedicated to healing and improving human health and wellbeing.</p>
+                            <div class="mission-objectives">
+                                <h4>KEY OBJECTIVES:</h4>
+                                <ul>
+                                    <li>Develop strong biological and medical knowledge</li>
+                                    <li>Cultivate compassion and empathy for patients</li>
+                                    <li>Master diagnostic and treatment skills</li>
+                                    <li>Contribute to medical advancement and research</li>
+                                    <li>Serve humanity with dedication and integrity</li>
+                                </ul>
+                            </div>
+                            <div class="mission-progress">
+                                <span class="progress-label">CURRENT PHASE:</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%"></div>
+                                </div>
+                                <span class="progress-status">KNOWLEDGE ACCUMULATION</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="synergy-section">
+                    <h3>MISSION SYNERGY</h3>
+                    <p>Both careers share a common purpose: understanding how the universe works and using that knowledge to help humanity. The rigor required for astrophysics complements the precision needed in medicine. Both demand continuous learning, ethical commitment, and the courage to pursue complex challenges.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contactSection" class="section">
+            <div class="section-content">
+                <h2 class="section-title">CONTACT TERMINAL</h2>
+                
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3>TRANSMISSION CHANNELS</h3>
+                        <div class="contact-item">
+                            <span class="contact-label">EMAIL:</span>
+                            <span class="contact-value">[ADD YOUR EMAIL HERE]</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">PHONE:</span>
+                            <span class="contact-value">[ADD YOUR PHONE NUMBER HERE]</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">LOCATION:</span>
+                            <span class="contact-value">Bangladesh</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">SCHOOL:</span>
+                            <span class="contact-value">Al Amin Academy School And College</span>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" id="contactForm">
+                        <h3>MESSAGE RELAY</h3>
+                        <div class="form-group">
+                            <input type="text" placeholder="YOUR NAME" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="YOUR EMAIL" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="SUBJECT">
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="YOUR MESSAGE" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">TRANSMIT MESSAGE</button>
+                        <p class="form-note">Note: This is a demonstration form. To enable email functionality, integrate a backend service like Formspree, Netlify Forms, or Firebase.</p>
+                    </form>
+                </div>
+
+                <div class="social-links">
+                    <h3>SOCIAL NETWORKS</h3>
+                    <div class="social-placeholder">
+                        <p>Add your social media links here (GitHub, LinkedIn, Twitter, Instagram, etc.)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2026 Iqtidaar Arafath. Year 3000 Personal Science Operating System.</p>
+                <p class="easter-message" style="display: none;">KEEP LOOKING UP — The universe is waiting. 🌌</p>
+                <p class="footer-credit">Built with HTML, CSS, Vanilla JavaScript, and cosmic inspiration.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
